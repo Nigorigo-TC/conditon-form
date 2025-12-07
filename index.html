@@ -5,17 +5,18 @@
   <title>コンディション記録</title>
   <style>
     body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 16px;
-    line-height: 1.5;
-  }
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px;
+      line-height: 1.5;
+    }
 
-  /* ★ ここを追加した部分（スライダーの長さ調整） */
-  input[type="range"] {
-    width: 300px;   /* ← 150px や 250px に変えてもOK */
-  }
+    /* スライダーの長さ調整 */
+    input[type="range"] {
+      width: 300px;
+    }
+
     h1 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
@@ -176,8 +177,8 @@
       </div>
     </fieldset>
 
-    <!-- 11. 故障・怪我の箇所 -->
-    <label>
+    <!-- 11. 故障・怪我の箇所（※ 有を選んだときだけ表示） -->
+    <label id="injury-part-wrapper" style="display:none;">
       11. 故障・怪我の箇所
       <input type="text" name="injury_part" />
       <small>※ 故障・怪我がある場合は部位を具体的に入力してください（例：右足首）</small>
@@ -294,8 +295,8 @@
       <small>※ 特にない場合は「特になし」を選択してください</small>
     </fieldset>
 
-    <!-- 21-1. その他 -->
-    <label>
+    <!-- 21-1. その他（※ その他を選んだときだけ表示） -->
+    <label id="other-symptoms-wrapper" style="display:none;">
       21-1. その他の症状
       <input type="text" name="other_symptoms" />
     </label>
@@ -329,6 +330,42 @@
 
     const form = document.getElementById("condition-form");
     const messageDiv = document.getElementById("message");
+
+    // --- 10. 故障有無 → 11.箇所を表示/非表示 ---
+    const injuryRadios = document.querySelectorAll('input[name="injury"]');
+    const injuryPartWrapper = document.getElementById("injury-part-wrapper");
+    const injuryPartInput = document.querySelector('input[name="injury_part"]');
+
+    function updateInjuryPartVisibility() {
+      const selected = document.querySelector('input[name="injury"]:checked');
+      if (selected && selected.value === "有") {
+        injuryPartWrapper.style.display = "block";
+      } else {
+        injuryPartWrapper.style.display = "none";
+        if (injuryPartInput) injuryPartInput.value = "";
+      }
+    }
+    injuryRadios.forEach(r => r.addEventListener("change", updateInjuryPartVisibility));
+    updateInjuryPartVisibility(); // 初期状態反映
+
+    // --- 21. 特記事項 → 21-1. その他を表示/非表示 ---
+    const symptomCheckboxes = document.querySelectorAll('input[name="symptoms"]');
+    const otherWrapper = document.getElementById("other-symptoms-wrapper");
+    const otherInput = document.querySelector('input[name="other_symptoms"]');
+
+    function updateOtherSymptomsVisibility() {
+      const othersChecked = Array.from(symptomCheckboxes).some(
+        cb => cb.value === "その他" && cb.checked
+      );
+      if (othersChecked) {
+        otherWrapper.style.display = "block";
+      } else {
+        otherWrapper.style.display = "none";
+        if (otherInput) otherInput.value = "";
+      }
+    }
+    symptomCheckboxes.forEach(cb => cb.addEventListener("change", updateOtherSymptomsVisibility));
+    updateOtherSymptomsVisibility(); // 初期状態反映
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -459,5 +496,6 @@
   </script>
 </body>
 </html>
+
 
 
