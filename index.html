@@ -2,59 +2,406 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>コンディション記録テスト</title>
+  <title>コンディション記録</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px;
+      line-height: 1.5;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    fieldset {
+      border: 1px solid #ddd;
+      padding: 0.75rem 1rem 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    legend {
+      font-weight: bold;
+      padding: 0 4px;
+    }
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+      display: block;
+      width: 100%;
+      padding: 0.4rem;
+      margin-top: 0.25rem;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .slider-row span {
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+    .checkbox-group label,
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    small {
+      font-size: 0.8rem;
+      color: #555;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 0.25rem 0 0.5rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>コンディション記録（テスト）</h1>
+  <h1>コンディション記録</h1>
 
   <form id="condition-form">
     <!-- 1. 日付 -->
     <label>
-      日付：
+      1. 日付
       <input type="date" name="date" required />
     </label>
-    <br />
 
     <!-- 2. 所属 -->
     <label>
-      所属：
+      2. 所属
       <input type="text" name="team" required />
     </label>
-    <br />
 
     <!-- 3. 名前 -->
     <label>
-      名前：
+      3. 名前
       <input type="text" name="name" required />
+      <small>※ フルネームで入力してください</small>
     </label>
-    <br />
+
+    <!-- 4. 全般的体調 -->
+    <label>
+      4. 全般的体調
+      <div class="slider-row">
+        <span>とても悪い</span>
+        <input type="range" name="health" min="0" max="100" value="50" />
+        <span>とても良い</span>
+      </div>
+    </label>
+
+    <!-- 5. 疲労感 -->
+    <label>
+      5. 疲労感
+      <div class="slider-row">
+        <span>とても強い</span>
+        <input type="range" name="fatigue" min="0" max="100" value="50" />
+        <span>全く無い</span>
+      </div>
+    </label>
+
+    <!-- 6. 睡眠時間 -->
+    <label>
+      6. 睡眠時間（例：7.25, 7.5）
+      <input type="number" name="sleep_time" min="0" max="24" step="0.1" />
+      <small>※ 手入力もできます</small>
+    </label>
+
+    <!-- 7. 睡眠の深さ -->
+    <label>
+      7. 睡眠の深さ
+      <div class="slider-row">
+        <span>とても浅い</span>
+        <input type="range" name="sleep_quality" min="0" max="100" value="50" />
+        <span>とても深い</span>
+      </div>
+    </label>
+
+    <!-- 8. 睡眠状況（複数選択） -->
+    <fieldset>
+      <legend>8. 睡眠状況（複数選択）</legend>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="sleep_issues" value="夢を見た" />夢を見た</label>
+        <label><input type="checkbox" name="sleep_issues" value="何回も目覚めた" />何回も目覚めた</label>
+        <label><input type="checkbox" name="sleep_issues" value="何回もトイレに行った" />何回もトイレに行った</label>
+        <label><input type="checkbox" name="sleep_issues" value="寝汗をかいた" />寝汗をかいた</label>
+        <label><input type="checkbox" name="sleep_issues" value="寝付けなかった" />寝付けなかった</label>
+        <label><input type="checkbox" name="sleep_issues" value="普段より寝付けなかった" />普段より寝付けなかった</label>
+        <label><input type="checkbox" name="sleep_issues" value="特になし" />特になし</label>
+      </div>
+    </fieldset>
+
+    <!-- 9. 食欲 -->
+    <label>
+      9. 食欲
+      <div class="slider-row">
+        <span>全く無い</span>
+        <input type="range" name="appetite" min="0" max="100" value="50" />
+        <span>とてもある</span>
+      </div>
+    </label>
+
+    <!-- 10. 故障・怪我の有無 -->
+    <fieldset>
+      <legend>10. 故障・怪我の有無</legend>
+      <div class="radio-group">
+        <label><input type="radio" name="injury" value="無" checked />無</label>
+        <label><input type="radio" name="injury" value="有" />有</label>
+      </div>
+    </fieldset>
+
+    <!-- 11. 故障・怪我の箇所 -->
+    <label>
+      11. 故障・怪我の箇所
+      <input type="text" name="injury_part" />
+      <small>※ 故障・怪我がある場合は部位を具体的に入力してください（例：右足首）</small>
+    </label>
+
+    <!-- 12. 故障・怪我の程度 -->
+    <label>
+      12. 故障・怪我の程度
+      <div class="slider-row">
+        <span>練習できない</span>
+        <input type="range" name="injury_severity" min="0" max="100" value="50" />
+        <span>全くない</span>
+      </div>
+    </label>
+
+    <!-- 13. 練習強度 -->
+    <label>
+      13. 練習強度
+      <div class="slider-row">
+        <span>非常にきつい</span>
+        <input type="range" name="training_intensity" min="0" max="100" value="50" />
+        <span>非常に楽</span>
+      </div>
+    </label>
+
+    <!-- 14. 排便の有無 -->
+    <fieldset>
+      <legend>14. 前日の排便の有無</legend>
+      <div class="radio-group">
+        <label><input type="radio" name="bowel_movement" value="有" checked />有</label>
+        <label><input type="radio" name="bowel_movement" value="無" />無</label>
+      </div>
+    </fieldset>
+
+    <!-- 15. 便の形 -->
+    <div>
+      <p>便の形（1〜7）</p>
+      <img src="stool_chart.png" alt="便の形チャート" />
+      <label>
+        15. 前日の便の形
+        <select name="bowel_shape">
+          <option value="">選択してください</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+        </select>
+        <small>※ 画像を参考に選択</small>
+      </label>
+    </div>
+
+    <!-- 16. 走行距離 -->
+    <label>
+      16. 前日の走行距離（km）
+      <input type="number" name="running_distance" min="0" max="100" step="0.1" />
+      <small>※ 手入力もできます</small>
+    </label>
+
+    <!-- 17. SpO2 -->
+    <label>
+      17. SpO₂（％）
+      <input type="number" name="spo2" min="70" max="100" />
+      <small>※ 手入力もできます</small>
+    </label>
+
+    <!-- 18. 脈拍数 -->
+    <label>
+      18. 脈拍数（拍/分）
+      <input type="number" name="pulse" min="30" max="200" />
+      <small>※ 手入力もできます</small>
+    </label>
+
+    <!-- 19. 体温 -->
+    <label>
+      19. 体温（℃）
+      <input type="number" name="temperature" min="34" max="42" step="0.1" />
+      <small>※ 手入力もできます</small>
+    </label>
+
+    <!-- 20. 体重 -->
+    <label>
+      20. 体重（kg）
+      <input type="number" name="weight" min="20" max="150" step="0.1" />
+      <small>※ 手入力もできます</small>
+    </label>
+
+    <!-- 21. 特記事項 -->
+    <fieldset>
+      <legend>21. 特記事項（複数選択）</legend>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="symptoms" value="特になし" />特になし</label>
+        <label><input type="checkbox" name="symptoms" value="咳" />咳</label>
+        <label><input type="checkbox" name="symptoms" value="鼻水" />鼻水</label>
+        <label><input type="checkbox" name="symptoms" value="頭痛" />頭痛</label>
+        <label><input type="checkbox" name="symptoms" value="息苦しさ" />息苦しさ</label>
+        <label><input type="checkbox" name="symptoms" value="下痢" />下痢</label>
+        <label><input type="checkbox" name="symptoms" value="喉の痛み" />喉の痛み</label>
+        <label><input type="checkbox" name="symptoms" value="悪寒" />悪寒</label>
+        <label><input type="checkbox" name="symptoms" value="腹痛" />腹痛</label>
+        <label><input type="checkbox" name="symptoms" value="熱感" />熱感</label>
+        <label><input type="checkbox" name="symptoms" value="倦怠感" />倦怠感</label>
+        <label><input type="checkbox" name="symptoms" value="吐き気" />吐き気</label>
+        <label><input type="checkbox" name="symptoms" value="痰" />痰</label>
+        <label><input type="checkbox" name="symptoms" value="月経" />月経</label>
+        <label><input type="checkbox" name="symptoms" value="月経痛（腰痛・下腹部痛等）" />月経痛（腰痛・下腹部痛等）</label>
+        <label><input type="checkbox" name="symptoms" value="月経前不調（腰痛やむくみ、体重増加）" />月経前不調（腰痛やむくみ、体重増加）</label>
+        <label><input type="checkbox" name="symptoms" value="不正出血" />不正出血</label>
+        <label><input type="checkbox" name="symptoms" value="服薬" />服薬</label>
+        <label><input type="checkbox" name="symptoms" value="その他" />その他</label>
+      </div>
+      <small>※ 特にない場合は「特になし」を選択してください</small>
+    </fieldset>
+
+    <!-- 21-1. その他 -->
+    <label>
+      21-1. その他の症状
+      <input type="text" name="other_symptoms" />
+    </label>
+
+    <!-- 22. トレーニング時間 -->
+    <label>
+      22. 前日のトレーニング時間（分）
+      <input type="number" name="exercise_time" min="0" max="300" />
+      <small>※ ウォームアップおよびクールダウンの時間は含めなくて大丈夫です</small>
+    </label>
+
+    <!-- 23. 運動のきつさ（RPE） -->
+    <div>
+      <p>運動のきつさ（0～10）</p>
+      <img src="rpe_chart.png" alt="RPEチャート" />
+      <label>
+        23. 前日の運動のきつさ（RPE）
+        <input type="number" name="exercise_rpe" min="0" max="10" />
+      </label>
+      <small>※ 上記画像を参考に入力してください</small>
+    </div>
 
     <button type="submit">送信</button>
   </form>
 
-  <p id="message"></p>
+  <div id="message"></div>
 
   <script>
-    // ★ここを自分の情報に書き換えてください
-    const SUPABASE_URL = "https://zadmkthnxgbgsipxciuf.supabase.co";      // あなたのProject URL
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphZG1rdGhueGdiZ3NpcHhjaXVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2NjMxNTEsImV4cCI6MjA1OTIzOTE1MX0.dv5vl3aZ6gcaDHi2-W3F4rT4wTrB3U1jgretX-yG_VU"; // あなたのanon key
+    // ★ここをあなたのSupabase情報に書き換えてください
+    const SUPABASE_URL = "https://xxxxx.supabase.co";        // Project URL
+    const SUPABASE_ANON_KEY = "ここに anon public key を貼る"; // anon key（service_roleは絶対NG）
 
     const form = document.getElementById("condition-form");
-    const messageEl = document.getElementById("message");
+    const messageDiv = document.getElementById("message");
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();  // ページがリロードされるのを止める
-      messageEl.textContent = "送信中です...";
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      messageDiv.textContent = "送信中です...";
 
       const formData = new FormData(form);
 
-      // Supabaseに送るデータ
+      // ラジオ
+      const injury = formData.get("injury") || "無";
+      const bowelMovement = formData.get("bowel_movement") || "有";
+
+      // チェックボックス複数選択 → カンマ区切り
+      const sleepIssues = Array.from(
+        document.querySelectorAll('input[name="sleep_issues"]:checked')
+      ).map(el => el.value).join(", ");
+
+      const symptoms = Array.from(
+        document.querySelectorAll('input[name="symptoms"]:checked')
+      ).map(el => el.value).join(", ");
+
       const data = {
         date: formData.get("date"),
-        team: formData.get("team"),
-        name: formData.get("name"),
-        exported: false  // 新規は未出力扱い
+        team: formData.get("team")?.trim(),
+        name: formData.get("name")?.trim(),
+        health: Number(formData.get("health") || 0),
+        fatigue: Number(formData.get("fatigue") || 0),
+        sleep_time: formData.get("sleep_time") ? Number(formData.get("sleep_time")) : null,
+        sleep_quality: Number(formData.get("sleep_quality") || 0),
+        sleep_issues: sleepIssues,
+        appetite: Number(formData.get("appetite") || 0),
+        injury: injury,
+        injury_part: formData.get("injury_part")?.trim() || "",
+        injury_severity: Number(formData.get("injury_severity") || 0),
+        training_intensity: Number(formData.get("training_intensity") || 0),
+        bowel_movement: bowelMovement,
+        bowel_shape: formData.get("bowel_shape") || "",
+        running_distance: formData.get("running_distance")
+          ? Number(formData.get("running_distance")) : null,
+        spo2: formData.get("spo2") ? Number(formData.get("spo2")) : null,
+        pulse: formData.get("pulse") ? Number(formData.get("pulse")) : null,
+        temperature: formData.get("temperature")
+          ? Number(formData.get("temperature")) : null,
+        weight: formData.get("weight") ? Number(formData.get("weight")) : null,
+        symptoms: symptoms,
+        other_symptoms: formData.get("other_symptoms")?.trim() || "",
+        exercise_time: formData.get("exercise_time")
+          ? Number(formData.get("exercise_time")) : null,
+        exercise_rpe: formData.get("exercise_rpe")
+          ? Number(formData.get("exercise_rpe")) : null,
+        exported: false
       };
+
+      // ★Streamlit版に近いバリデーション
+      if (!data.team || !data.name) {
+        messageDiv.textContent = "❗ 所属と名前を入力してください。";
+        return;
+      }
+      if (injury === "有" && !data.injury_part) {
+        messageDiv.textContent = "❗ 11. 故障の箇所を入力してください。";
+        return;
+      }
+      if (!data.symptoms) {
+        messageDiv.textContent = "❗ 21. 特記事項を選択してください。";
+        return;
+      }
+      if (symptoms.includes("その他") && !data.other_symptoms) {
+        messageDiv.textContent = "❗ 21-1. その他の症状を入力してください。";
+        return;
+      }
+      if (data.exercise_time === null) {
+        messageDiv.textContent = "❗ 22. トレーニング時間（分）を入力してください。";
+        return;
+      }
+      if (data.exercise_rpe === null) {
+        messageDiv.textContent = "❗ 23. 運動のきつさ（RPE）を入力してください。";
+        return;
+      }
 
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/condition`, {
@@ -69,14 +416,14 @@
 
         if (!res.ok) {
           const text = await res.text();
-          messageEl.textContent = `エラー：${res.status} ${text}`;
+          messageDiv.textContent = `送信エラー: ${res.status} ${text}`;
         } else {
-          messageEl.textContent = "送信できました。ありがとうございました！";
+          messageDiv.textContent = "✅ 送信が完了しました。ありがとうございました！";
           form.reset();
         }
-      } catch (error) {
-        console.error(error);
-        messageEl.textContent = "通信エラーが発生しました。ネットワークを確認してください。";
+      } catch (err) {
+        console.error(err);
+        messageDiv.textContent = "通信エラーが発生しました。ネットワークを確認してください。";
       }
     });
   </script>
