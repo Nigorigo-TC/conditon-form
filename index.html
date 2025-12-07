@@ -5,12 +5,17 @@
   <title>コンディション記録</title>
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 16px;
-      line-height: 1.5;
-    }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px;
+    line-height: 1.5;
+  }
+
+  /* ★ ここを追加した部分（スライダーの長さ調整） */
+  input[type="range"] {
+    width: 200px;   /* ← 150px や 250px に変えてもOK */
+  }
     h1 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
@@ -454,3 +459,4 @@
   </script>
 </body>
 </html>
+
