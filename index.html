@@ -418,16 +418,39 @@
           const text = await res.text();
           messageDiv.textContent = `送信エラー: ${res.status} ${text}`;
         } else {
-          messageDiv.textContent = "✅ 送信が完了しました。ありがとうございました！";
-          form.reset();
-        }
-      } catch (err) {
-        console.error(err);
-        messageDiv.textContent = "通信エラーが発生しました。ネットワークを確認してください。";
-      }
+           // 成功時：画面を「送信完了画面」に切り替える
+  document.body.innerHTML = `
+    <div style="
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 16px;
+      text-align: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    ">
+      <h1 style="font-size: 1.6rem;">✅ 送信が完了しました</h1>
+      <p style="margin-top: 16px; font-size: 1.1rem;">
+        ご協力ありがとうございました。<br>
+        本日もトレーニング頑張ってください！
+      </p>
+
+      <button
+        style="
+          margin-top: 32px;
+          padding: 10px 20px;
+          font-size: 1rem;
+          cursor: pointer;
+        "
+        onclick="location.reload()"
+      >
+        もう一度入力する
+      </button>
+    </div>
+  `;
+}
     });
   </script>
 </body>
 </html>
+
 
 
