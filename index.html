@@ -213,8 +213,8 @@
       </div>
     </fieldset>
 
-    <!-- 15. 便の形 -->
-    <div>
+    <!-- 15. 便の形（※ 排便「有」のときだけ表示） -->
+    <div id="stool-section">
       <p>便の形（1〜7）</p>
       <img src="stool_chart.png" alt="便の形チャート" />
       <label>
@@ -346,7 +346,24 @@
       }
     }
     injuryRadios.forEach(r => r.addEventListener("change", updateInjuryPartVisibility));
-    updateInjuryPartVisibility(); // 初期状態反映
+    updateInjuryPartVisibility(); // 初期状態
+
+    // --- 14. 排便有無 → 便の形(15)を表示/非表示 ---
+    const bowelRadios = document.querySelectorAll('input[name="bowel_movement"]');
+    const stoolSection = document.getElementById("stool-section");
+    const bowelShapeSelect = document.querySelector('select[name="bowel_shape"]');
+
+    function updateStoolVisibility() {
+      const selected = document.querySelector('input[name="bowel_movement"]:checked');
+      if (selected && selected.value === "有") {
+        stoolSection.style.display = "block";
+      } else {
+        stoolSection.style.display = "none";
+        if (bowelShapeSelect) bowelShapeSelect.value = "";
+      }
+    }
+    bowelRadios.forEach(r => r.addEventListener("change", updateStoolVisibility));
+    updateStoolVisibility(); // 初期状態
 
     // --- 21. 特記事項 → 21-1. その他を表示/非表示 ---
     const symptomCheckboxes = document.querySelectorAll('input[name="symptoms"]');
@@ -365,7 +382,7 @@
       }
     }
     symptomCheckboxes.forEach(cb => cb.addEventListener("change", updateOtherSymptomsVisibility));
-    updateOtherSymptomsVisibility(); // 初期状態反映
+    updateOtherSymptomsVisibility(); // 初期状態
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -496,6 +513,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
