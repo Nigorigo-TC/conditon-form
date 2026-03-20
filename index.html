@@ -413,10 +413,6 @@
         weight: formData.get("weight") ? Number(formData.get("weight")) : null,
         symptoms: symptoms,
         other_symptoms: formData.get("other_symptoms")?.trim() || "",
-        exercise_time: formData.get("exercise_time")
-          ? Number(formData.get("exercise_time")) : null,
-        exercise_rpe: formData.get("exercise_rpe")
-          ? Number(formData.get("exercise_rpe")) : null,
         exported: false
       };
 
@@ -437,14 +433,7 @@
         messageDiv.textContent = "❗ 21-1. その他の症状を入力してください。";
         return;
       }
-      if (data.exercise_time === null) {
-        messageDiv.textContent = "❗ 22. トレーニング時間（分）を入力してください。";
-        return;
-      }
-      if (data.exercise_rpe === null) {
-        messageDiv.textContent = "❗ 23. 運動のきつさ（RPE）を入力してください。";
-        return;
-      }
+     
 
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/condition`, {
